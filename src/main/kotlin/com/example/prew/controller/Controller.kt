@@ -55,7 +55,7 @@ class Controller(private val service: Service) {
             onSuccess = { ResponseEntity.ok().body(result.getOrNull()) },
             onFailure = { error ->
                 return when (error) {
-                    is Error.NotFoundError -> ResponseEntity.notFound().build()
+                    is Error.NotFoundNodeError -> ResponseEntity.notFound().build()
                     is Error.DatabaseError -> ResponseEntity.internalServerError().body(error)
                     else -> ResponseEntity.internalServerError().body(error)
                 }
