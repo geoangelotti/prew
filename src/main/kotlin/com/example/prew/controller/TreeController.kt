@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/trees")
+@RequestMapping("/edges")
 class TreeController(private val service: TreeService) {
-    @PostMapping("/edges")
+    @PostMapping
     fun createEdge(@RequestBody edge: Edge<Int>): ResponseEntity<Any> {
-        val uri = URI.create("/edges/${edge.from}/${edge.to}")
+        val uri = URI.create("/${edge.from}/${edge.to}")
         val result = service.createEdge(edge)
         return result.fold(
             onSuccess = { ResponseEntity.created(uri).body(edge) },
@@ -32,7 +32,7 @@ class TreeController(private val service: TreeService) {
         )
     }
 
-    @DeleteMapping("/edges/{from}/{to}")
+    @DeleteMapping("/{from}/{to}")
     fun deleteTree(@PathVariable from: Int, @PathVariable to: Int): ResponseEntity<Any> {
         val edge = Edge(from, to)
         val result = service.deleteEdge(edge)
