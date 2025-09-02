@@ -19,7 +19,7 @@ class Repository(private val dsl: DSLContext) {
             return if (inserted > 0) Result.success(Unit)
             else Result.failure(Error.AlreadyExistsError(edge))
         } catch (e: Exception) {
-            Result.failure(Error.DatabaseError(e.message?: "unknown"))
+            Result.failure(Error.DatabaseError(e.message ?: "unknown"))
         }
     }
 
