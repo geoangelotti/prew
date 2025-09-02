@@ -1,4 +1,3 @@
 package com.example.prew.dto
 
-class Edge {
-}
+data class Edge<T>(val from: T, val to: T)

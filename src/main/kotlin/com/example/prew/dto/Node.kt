@@ -1,4 +1,3 @@
 package com.example.prew.dto
 
-class Node {
-}
+data class Node<T>(val value: T, val children: MutableList<Node<T>> = mutableListOf())
