@@ -5,6 +5,7 @@ import com.example.prew.errors.Error
 import com.example.prew.service.TreeService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -37,6 +38,21 @@ class TreeController(private val service: TreeService) {
         val result = service.deleteEdge(edge)
         return result.fold(
             onSuccess = { ResponseEntity.noContent().build() },
+            onFailure = { error ->
+                return when (error) {
+                    is Error.NotFoundError -> ResponseEntity.notFound().build()
+                    is Error.DatabaseError -> ResponseEntity.internalServerError().body(error)
+                    else -> ResponseEntity.internalServerError().body(error)
+                }
+            }
+        )
+    }
+
+    @GetMapping("/{id}/tree")
+    fun getTree(@PathVariable id: Int): ResponseEntity<Any> {
+        val result = service.getTree(id)
+        return result.fold(
+            onSuccess = { ResponseEntity.ok().body(result.getOrNull()) },
             onFailure = { error ->
                 return when (error) {
                     is Error.NotFoundError -> ResponseEntity.notFound().build()
