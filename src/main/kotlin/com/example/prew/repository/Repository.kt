@@ -44,6 +44,14 @@ class Repository(private val dsl: DSLContext) {
             .map { Edge(it.value1(), it.value2()) }
     }
 
+    private fun getEdgesByDestination(id: Int): List<Edge<Int>> {
+        return dsl.select(EDGES.FROM_ID, EDGES.TO_ID)
+            .from(EDGES)
+            .where(EDGES.TO_ID.eq(id))
+            .fetch()
+            .map { Edge(it.value1(), it.value2()) }
+    }
+
     private fun buildTree(
         id: Int,
         maxDepth: Int = 10,
@@ -67,7 +75,8 @@ class Repository(private val dsl: DSLContext) {
     fun getTree(id: Int): Result<Node<Int>> {
         return try {
             val tree = buildTree(id)
-            if (tree.children.isEmpty()) {
+            val edges = getEdgesByDestination(id)
+            if (tree.children.isEmpty() && edges.isEmpty()) {
                 return Result.failure(Error.NotFoundNodeError(id))
             }
             return Result.success(tree)
