@@ -1,6 +1,7 @@
 package com.example.prew.service
 
 import com.example.prew.dto.Edge
+import com.example.prew.dto.Node
 import com.example.prew.errors.Error
 import com.example.prew.repository.EdgeRepository
 import org.springframework.stereotype.Service
@@ -16,5 +17,9 @@ class TreeService(private val repository: EdgeRepository) {
 
     fun deleteEdge(edge: Edge<Int>): Result<Unit> {
         return repository.deleteEdge(edge)
+    }
+
+    fun getTree(id: Int): Result<Node<Int>> {
+        return repository.getTree(id)
     }
 }
