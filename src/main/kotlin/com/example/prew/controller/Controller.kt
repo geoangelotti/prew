@@ -1,7 +1,6 @@
 package com.example.prew.controller
 
 import com.example.prew.dto.Edge
-import com.example.prew.errors.Error
 import com.example.prew.service.Service
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -22,13 +21,7 @@ class Controller(private val service: Service) {
         val result = service.createEdge(edge)
         return result.fold(
             onSuccess = { ResponseEntity.created(uri).body(edge) },
-            onFailure = { error ->
-                return when (error) {
-                    is Error.InvalidEdgeError -> ResponseEntity.badRequest().body(error)
-                    is Error.AlreadyExistsError -> ResponseEntity.badRequest().body(error)
-                    else -> ResponseEntity.internalServerError().body(error)
-                }
-            },
+            onFailure = { error -> throw error }
         )
     }
 
@@ -38,13 +31,7 @@ class Controller(private val service: Service) {
         val result = service.deleteEdge(edge)
         return result.fold(
             onSuccess = { ResponseEntity.noContent().build() },
-            onFailure = { error ->
-                return when (error) {
-                    is Error.NotFoundEdgeError -> ResponseEntity.notFound().build()
-                    is Error.DatabaseError -> ResponseEntity.internalServerError().body(error)
-                    else -> ResponseEntity.internalServerError().body(error)
-                }
-            }
+            onFailure = { error -> throw error }
         )
     }
 
@@ -53,13 +40,7 @@ class Controller(private val service: Service) {
         val result = service.getTree(id)
         return result.fold(
             onSuccess = { ResponseEntity.ok().body(result.getOrNull()) },
-            onFailure = { error ->
-                return when (error) {
-                    is Error.NotFoundNodeError -> ResponseEntity.notFound().build()
-                    is Error.DatabaseError -> ResponseEntity.internalServerError().body(error)
-                    else -> ResponseEntity.internalServerError().body(error)
-                }
-            }
+            onFailure = { error -> throw error }
         )
     }
 }
