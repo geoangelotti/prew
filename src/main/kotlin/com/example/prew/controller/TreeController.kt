@@ -23,9 +23,9 @@ class TreeController(private val service: TreeService) {
             onSuccess = { ResponseEntity.created(uri).body(edge) },
             onFailure = { error ->
                 return when (error) {
-                    is Error.InvalidEdgeError -> ResponseEntity.badRequest().body(error.message)
-                    is Error.AlreadyExistsError -> ResponseEntity.badRequest().body(error.message)
-                    else -> ResponseEntity.internalServerError().body(error.message)
+                    is Error.InvalidEdgeError -> ResponseEntity.badRequest().body(error)
+                    is Error.AlreadyExistsError -> ResponseEntity.badRequest().body(error)
+                    else -> ResponseEntity.internalServerError().body(error)
                 }
             },
         )
@@ -40,8 +40,8 @@ class TreeController(private val service: TreeService) {
             onFailure = { error ->
                 return when (error) {
                     is Error.NotFoundError -> ResponseEntity.notFound().build()
-                    is Error.DatabaseError -> ResponseEntity.internalServerError().body(error.message)
-                    else -> ResponseEntity.internalServerError().body(error.message)
+                    is Error.DatabaseError -> ResponseEntity.internalServerError().body(error)
+                    else -> ResponseEntity.internalServerError().body(error)
                 }
             }
         )
