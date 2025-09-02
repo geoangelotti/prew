@@ -5,10 +5,12 @@ import com.example.prew.dto.CycleChild
 import com.example.prew.dto.Edge
 import com.example.prew.dto.Node
 import com.example.prew.dto.NodeChild
+import com.example.prew.dto.PagedChild
 import com.example.prew.errors.Error
 import com.example.prew.jooq.Tables.EDGES
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
+import java.net.URI
 
 @Repository
 class Repository(private val dsl: DSLContext) {
@@ -59,7 +61,8 @@ class Repository(private val dsl: DSLContext) {
         val child = getChild(id, maxDepth)
         return when (child) {
             is NodeChild -> child.node
-            is CycleChild -> Node(child.cycle, listOf(CycleChild(child.cycle)))
+            is CycleChild -> Node(child.cycle, listOf(child))
+            is PagedChild -> Node(child.value, listOf(child))
         }
     }
 
@@ -69,7 +72,7 @@ class Repository(private val dsl: DSLContext) {
         visited: MutableSet<Int> = mutableSetOf()
     ): Child<Int> {
         if (maxDepth < 0) {
-            return NodeChild(Node(id, emptyList()))
+            return PagedChild(id,URI.create("/$id/tree"))
         }
         if (!visited.add(id)) {
             return CycleChild(id)
