@@ -30,7 +30,7 @@ class Repository(private val dsl: DSLContext) {
                 .and(EDGES.TO_ID.eq(edge.to))
                 .execute()
             if (deleted > 0) Result.success(Unit)
-            else Result.failure(Error.NotFoundError(edge))
+            else Result.failure(Error.NotFoundEdgeError(edge))
         } catch (e: Exception) {
             Result.failure(Error.DatabaseError(e.message ?: "unknown"))
         }
