@@ -15,9 +15,8 @@ class EdgeRepository(private val dsl: DSLContext) {
                 .set(EDGES.TO_ID, edge.to)
                 .onConflictDoNothing()
                 .execute()
-            if (inserted > 0) Result.success(Unit)
+            return if (inserted > 0) Result.success(Unit)
             else Result.failure(Error.AlreadyExistsError(edge))
-            return Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(Error.DatabaseError(e.message?: "unknown"))
         }
