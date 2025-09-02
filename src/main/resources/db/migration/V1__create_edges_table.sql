@@ -1,7 +1,7 @@
 CREATE TABLE edges (
     from_id INTEGER NOT NULL,
     to_id INTEGER NOT NULL,
-    CONSTRAINT edge_unique UNIQUE (from_id, to_id)
+    CONSTRAINT pk_edges PRIMARY KEY (from_id, to_id)
 );
 
 -- index
