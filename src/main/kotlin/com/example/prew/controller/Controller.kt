@@ -2,7 +2,7 @@ package com.example.prew.controller
 
 import com.example.prew.dto.Edge
 import com.example.prew.errors.Error
-import com.example.prew.service.TreeService
+import com.example.prew.service.Service
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,7 +15,7 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/edges")
-class TreeController(private val service: TreeService) {
+class Controller(private val service: Service) {
     @PostMapping
     fun createEdge(@RequestBody edge: Edge<Int>): ResponseEntity<Any> {
         val uri = URI.create("/${edge.from}/${edge.to}")

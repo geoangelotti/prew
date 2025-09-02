@@ -8,7 +8,7 @@ import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 
 @Repository
-class EdgeRepository(private val dsl: DSLContext) {
+class Repository(private val dsl: DSLContext) {
     fun insertEdge(edge: Edge<Int>): Result<Unit> {
         return try {
             val inserted = dsl.insertInto(EDGES)

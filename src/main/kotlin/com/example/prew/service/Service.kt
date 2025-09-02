@@ -3,11 +3,11 @@ package com.example.prew.service
 import com.example.prew.dto.Edge
 import com.example.prew.dto.Node
 import com.example.prew.errors.Error
-import com.example.prew.repository.EdgeRepository
+import com.example.prew.repository.Repository
 import org.springframework.stereotype.Service
 
 @Service
-class TreeService(private val repository: EdgeRepository) {
+class Service(private val repository: Repository) {
     fun createEdge(edge: Edge<Int>): Result<Unit> {
         if (edge.from == edge.to) {
             return Result.failure(Error.InvalidEdgeError(edge))
